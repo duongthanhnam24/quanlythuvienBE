@@ -6,10 +6,9 @@ const order = new Schema({
     orderItems: [
         {
             name: { type: String, required: true },
-            amount: { type: Number, required: true },
-            size: { type: String, required: true },
             image: { type: String, required: true },
-            price: { type: String, required: true },
+            type: { type: String, required: true },
+            author: { type: String, required: true },
             product: {
                 type: mongoose.Schema.Types.ObjectId,
                 ref: "Product",
@@ -17,19 +16,9 @@ const order = new Schema({
             },
         },
     ],
-    shippingAddress: {
-        fullName: { type: String, required: true },
-        address: { type: String, required: true },
-        city: { type: String, required: true },
-        phone: { type: String, required: true },
-    },
-    paymentMethod: { type: String, required: true },
-    totalPrice: { type: Number, required: true },
+
+    isBorrow: { type: Boolean, default: false },
     user: { type: mongoose.Schema.Types.ObjectId, ref: "user", required: true },
-    isPaid: { type: Boolean, default: false },
-    paidAt: { type: Date },
-    isDelivered: { type: Boolean, default: false },
-    deliveredAt: { type: Date },
 });
 
 order.plugin(mongooseDelete, {

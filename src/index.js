@@ -36,7 +36,7 @@ db.connect();
 route(app);
 
 app.listen(port, () => {
-    console.log(`App listening on port ${port}`);
+    console.log(`server on http://localhost:${port}`);
 });
 
 //Windows Shift + Alt + F.

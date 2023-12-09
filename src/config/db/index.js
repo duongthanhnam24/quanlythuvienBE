@@ -3,7 +3,6 @@ const dotenv = require("dotenv");
 dotenv.config();
 
 async function connect() {
-    console.log(process.env.MONGODB_URL);
     try {
         await mongoose.connect(`${process.env.MONGODB_URL}`, {
             useNewUrlParser: true,
@@ -11,7 +10,7 @@ async function connect() {
         });
 
         const database = mongoose.connection.db;
-        console.log("connect successfully");
+        console.log(`connect successfully to ${process.env.MONGODB_URL}`);
     } catch (error) {
         console.log({
             message: "connect failed",
