@@ -79,8 +79,7 @@ const UpdateUser = async (req, res) => {
 const getAllUser = async (req, res) => {
     try {
         const allUser = await user.find();
-        const user = await allUser.map((user) => user.toObject());
-        return res.status(200).json(user);
+        return res.status(200).json(allUser);
     } catch (error) {
         return res.status(400).json({ message: error });
     }
@@ -104,6 +103,24 @@ const moveUserToTrash = async (req, res) => {
         return res.status(400).json({ message: error });
     }
 };
+
+const punishUser = async (req, res) => {
+    const { id, key } = req.params;
+
+    try {
+        const updatedUser = await user.findOneAndUpdate({ _id: id }, { punish: key });
+
+        if (updatedUser) {
+            return res.status(200).json({ message: " successfully." });
+        } else {
+            return res.status(404).json({ message: "User not found." });
+        }
+    } catch (error) {
+        // Handle the error appropriately, e.g., send an error response
+
+        res.status(500).json({ message: "Internal server error." });
+    }
+};
 module.exports = {
     createUser,
     SignIn,
@@ -111,4 +128,5 @@ module.exports = {
     getAllUser,
     getUser,
     moveUserToTrash,
+    punishUser,
 };

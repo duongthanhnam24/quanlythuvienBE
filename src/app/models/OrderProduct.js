@@ -14,10 +14,11 @@ const order = new Schema({
                 ref: "Product",
                 required: true,
             },
+            isBorrow: { type: Boolean, default: true },
+            dateBorrow: { type: String, require: true },
         },
     ],
 
-    isBorrow: { type: Boolean, default: false },
     user: { type: mongoose.Schema.Types.ObjectId, ref: "user", required: true },
 });
 
