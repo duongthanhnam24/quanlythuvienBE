@@ -14,6 +14,7 @@ const user = new Schema(
         isAdmin: { type: Boolean, default: false, required: true },
         phoneNumber: { type: String, required: true },
         punish: { type: Boolean, default: false, require: true },
+        class: { type: String },
         // access_token: { type: String, required: true },
         // refresh_token: { type: String, required: true },
     },

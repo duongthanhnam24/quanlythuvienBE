@@ -39,22 +39,6 @@ const getAllProduct = async (req, res) => {
     }
 };
 
-const getHotProduct = async (req, res) => {
-    const newProduct = req.query.sort;
-    try {
-        if (newProduct) {
-            const Products = await Book.find().limit(8).sort({
-                updatedAt: newProduct,
-            });
-            return res.status(200).json(Products);
-        }
-        const Products = await Book.find({ sale: { $gte: 5 } }).limit(10);
-        return res.status(200).json(Products);
-    } catch (error) {
-        return res.status(400).json({ message: error });
-    }
-};
-
 const getProduct = async (req, res) => {
     try {
         const productItem = await Book.findOne({ _id: req.params.id });
@@ -86,19 +70,11 @@ const deleteProduct = async (req, res) => {
     }
 };
 
-const deleteManyProduct = async (req, res) => {
-    try {
-        await Book.delete({ _id: { $in: req.body } });
-        return res.status(200).json({ message: "Success" });
-    } catch (error) {
-        return res.status(400).json({ message: error.message });
-    }
-};
-
 // panigated
 const PanigatedSearch = async (req, res) => {
     try {
         const filter = req.query.filter;
+        console.log(filter);
         const searchIndex = req.query.search;
         const limit = 8;
         const productLength = await Book.count();
@@ -184,11 +160,10 @@ const getObjectProduct = async (req, res) => {
 module.exports = {
     createProduct,
     getAllProduct,
-    getHotProduct,
+
     getProduct,
     updateProduct,
     PanigatedSearch,
     getObjectProduct,
     deleteProduct,
-    deleteManyProduct,
 };

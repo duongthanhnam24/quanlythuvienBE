@@ -3,6 +3,7 @@ var jwt = require("jsonwebtoken");
 
 const user = require("../models/userDataBase");
 const { accesToken, refreshToken } = require("../../config/service/accesToken");
+const escapeStringRegexp = require("escape-string-regexp-node");
 
 const createUser = async (req, res) => {
     try {
@@ -78,6 +79,21 @@ const UpdateUser = async (req, res) => {
 
 const getAllUser = async (req, res) => {
     try {
+        const searchQuery = req.query.search;
+        if (searchQuery) {
+            console.log(1);
+            const $regex = escapeStringRegexp(searchQuery);
+            const allUserSearch = await user.find({
+                $or: [
+                    { name: { $regex, $options: "i" } },
+                    { msv: { $regex, $options: "i" } },
+                    { phoneNumber: { $regex, $options: "i" } },
+                    { class: { $regex, $options: "i" } },
+                ],
+            });
+            console.log(allUserSearch);
+            return res.status(200).json(allUserSearch);
+        }
         const allUser = await user.find();
         return res.status(200).json(allUser);
     } catch (error) {
