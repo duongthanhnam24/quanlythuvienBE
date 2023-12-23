@@ -7,10 +7,10 @@ const escapeStringRegexp = require("escape-string-regexp-node");
 
 const createUser = async (req, res) => {
     try {
-        const { name, msv, password, checkpassword, phone } = req.body;
+        const { name, msv, classs, password, checkpassword, phone } = req.body;
 
         // const allUser = await User.findOne({ email: req.body.email });
-        if (!name || !msv || !password || !checkpassword || !phone) {
+        if (!name || !msv || !password || !checkpassword || !phone || !classs) {
             return res.status(400).json({ message: "Error, Something wrong" });
         }
         if (password !== checkpassword) {
@@ -28,6 +28,7 @@ const createUser = async (req, res) => {
             password: hash,
             checkpassword: hash,
             phoneNumber: phone,
+            classs,
         });
         const user1 = await createUser.save();
         return res.status(200).json(user1);
@@ -112,9 +113,10 @@ const getUser = async (req, res) => {
 };
 
 const moveUserToTrash = async (req, res) => {
+    console.log(req.params.id);
     try {
-        const user = await user.delete({ _id: req.params.id });
-        const resultUser = res.status(200).json({ message: "successful" });
+        const deleteuser = await user.delete({ _id: req.params.id });
+        return res.status(200).json({ message: "successful" });
     } catch (error) {
         return res.status(400).json({ message: error });
     }

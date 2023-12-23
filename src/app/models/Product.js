@@ -7,6 +7,7 @@ const Book = new Schema(
     {
         name: { type: String, require: true },
         image: { type: String, required: true },
+        position: { type: String, require: true },
         type: { type: String, required: true },
         author: { type: String, required: true },
         slot: { type: Number, required: true },

@@ -22,8 +22,4 @@ const order = new Schema({
     user: { type: mongoose.Schema.Types.ObjectId, ref: "user", required: true },
 });
 
-order.plugin(mongooseDelete, {
-    deletedAt: true,
-    overrideMethods: "all", //  ghi đè lên các phương thức như find(), findeOne(),...
-});
 module.exports = mongoose.model("order", order);

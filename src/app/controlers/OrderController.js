@@ -1,31 +1,8 @@
 const order = require("../models/OrderProduct");
 const Product = require("../models/Product");
 const user = require("../models/userDataBase");
-
-const createOrder = async (req, res) => {
-    try {
-        const { orderItems, shippingAddress, paymentMethod, totalPrice, user } = req.body;
-        if (!orderItems || !shippingAddress || !paymentMethod || !totalPrice || !user) {
-            return res.status(400).json({ message: "missing someThing ?" });
-        }
-        for (const order of orderItems) {
-            const getProduct = await Product.findOne({ _id: order.product });
-            getProduct.sale += order.amount;
-            await getProduct.save();
-        }
-        const newOrder = await new order({
-            orderItems,
-            shippingAddress,
-            paymentMethod,
-            totalPrice,
-            user,
-        });
-        const orders = await newOrder.save();
-        return res.status(200).json(orders);
-    } catch (error) {
-        return res.status(400).json({ message: error });
-    }
-};
+const io = require("socket.io-client");
+const socket = io("http://localhost:5000");
 const getAllOrder = async (req, res) => {
     try {
         const getAll = await order.find();
@@ -85,6 +62,7 @@ const borrow = async (req, res) => {
         if (product.slot <= 0) {
             return res.status(200).json({ message: "Số lượng sách đã hết" });
         }
+
         product.slot = product.slot - 1;
         await product.save();
 
@@ -97,7 +75,9 @@ const borrow = async (req, res) => {
                 product: _id,
                 dateBorrow: dateBorrow,
             });
+
             await muon.save();
+            socket.emit("data", muon);
             return res.status(200).json({ message: "Mượn thành công", muon });
         } else {
             const newOrder = await new order({
@@ -125,6 +105,7 @@ const userBorrow = async (req, res) => {
     console.log(req.params);
     try {
         const idUser = req.params.id;
+
         const getAll = await order.findOne({ user: idUser });
         return res.status(200).json(getAll);
     } catch (error) {
@@ -132,7 +113,6 @@ const userBorrow = async (req, res) => {
     }
 };
 module.exports = {
-    createOrder,
     deleteOrder,
     getAllOrder,
     borrow,

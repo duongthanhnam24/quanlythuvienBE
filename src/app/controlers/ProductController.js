@@ -4,8 +4,8 @@ const escapeStringRegexp = require("escape-string-regexp-node");
 // CRUD
 const createProduct = async (req, res) => {
     try {
-        const { name, author, image, type, slot } = req.body;
-        if (!name || !image || !type || !author || !slot) {
+        const { name, author, image, type, slot, position } = req.body;
+        if (!name || !image || !type || !author || !slot || !position) {
             return res.status(400).json({ message: "missing something ?" });
         }
 
@@ -15,6 +15,7 @@ const createProduct = async (req, res) => {
             type,
             author,
             slot,
+            position,
         });
         const product = await newProduct.save();
         return res.status(200).json({ message: "thành công", product });
