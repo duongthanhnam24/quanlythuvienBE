@@ -82,7 +82,6 @@ const getAllUser = async (req, res) => {
     try {
         const searchQuery = req.query.search;
         if (searchQuery) {
-            console.log(1);
             const $regex = escapeStringRegexp(searchQuery);
             const allUserSearch = await user.find({
                 $or: [
